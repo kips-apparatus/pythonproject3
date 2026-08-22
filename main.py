@@ -45,6 +45,16 @@ def write_data(key, data):
 # =========================================================
 
 @app.route("/")
+def index():
+    return send_from_directory("html", "landing.html")
+
+
+@app.route("/landing")
+def landing_page():
+    return send_from_directory("html", "landing.html")
+
+
+@app.route("/home")
 def home():
     return send_from_directory("html", "homepage123.html")
 
@@ -67,6 +77,7 @@ def scanner_page():
 @app.route("/login")
 def login_page():
     return send_from_directory("html", "loginpage.html")
+
 
 
 # =========================================================

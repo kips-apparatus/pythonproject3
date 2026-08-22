@@ -141,22 +141,26 @@
     </div>
 
     <p class="signup-note">New to DoseWise? <a href="#">Create a family account</a></p>
-    <a href="/" class="back-home">← Back to Home</a>
+    <a href="/" class="back-home">← Back to Landing Page</a>
   </div>
 
+<script src="/auth.js"></script>
 <script>
   document.getElementById('loginForm').addEventListener('submit', function (e) {
     e.preventDefault();
-    // Demo login — redirect to home
-    window.location.href = '/';
+    const email = document.getElementById('email').value.trim();
+    const name = email ? email.split('@')[0] : 'User';
+    Auth.login(name, email);
   });
 
   document.querySelectorAll('.family-chip').forEach(function (chip) {
     chip.addEventListener('click', function () {
       document.querySelectorAll('.family-chip').forEach(c => c.classList.remove('selected'));
       chip.classList.add('selected');
-      // Demo — go to home as that family member
-      setTimeout(() => { window.location.href = '/'; }, 300);
+      const memberName = chip.getAttribute('data-name') || 'Family Member';
+      setTimeout(() => {
+        Auth.login(memberName);
+      }, 300);
     });
   });
 

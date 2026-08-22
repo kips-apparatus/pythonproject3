@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prescription Scanner | DoseWise</title>
+<script>window.isProtectedPage = true;</script>
+<script src="/auth.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: Arial, Helvetica, sans-serif; background: #fff; color: #1b2b24; line-height: 1.5; padding-bottom: 80px; }
@@ -103,12 +105,12 @@
 
 <nav class="navbar">
   <div class="nav-container">
-    <a href="/" class="nav-brand">
+    <a href="/home" class="nav-brand">
       <div class="brand-badge">💊</div>
       <span>DOSE<span>WISE</span></span>
     </a>
     <ul class="nav-links">
-      <li><a href="/" class="nav-link">🏠 Home</a></li>
+      <li><a href="/home" class="nav-link">🏠 Home</a></li>
       <li><a href="/medicines" class="nav-link">📅 Track Expiry</a></li>
       <li><a href="/reminders" class="nav-link">⏰ Dose Reminder</a></li>
       <li><a href="/scanner" class="nav-link active">📄 Scan Prescription</a></li>
