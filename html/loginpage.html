@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in | DoseWise</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: Arial, Helvetica, sans-serif; background: #fff;
+    color: #10241d; min-height: 100vh; display: flex; align-items: center;
+    justify-content: center; padding: 40px 16px;
+  }
+  .login-shell { width: 100%; max-width: 420px; }
+  .brand-row {
+    display: flex; align-items: center; gap: 10px; justify-content: center; margin-bottom: 28px;
+  }
+  .brand-mark {
+    width: 34px; height: 34px; border-radius: 10px; background: #0f8a6b;
+    display: flex; align-items: center; justify-content: center; color: #fff;
+    font-size: 18px; font-weight: 700;
+  }
+  .brand-name { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.3px; }
+  .login-card {
+    border: 1px solid #dfe9e3; border-radius: 18px; padding: 32px 28px;
+    background: #fff; box-shadow: 0 14px 30px rgba(15,138,107,0.08);
+  }
+  .login-card h1 { font-size: 1.4rem; margin: 0 0 6px; color: #0d1b2a; }
+  .login-card .lead { font-size: 0.9rem; color: #5c6b64; margin: 0 0 24px; line-height: 1.5; }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 0.85rem; font-weight: 700; color: #14532d; margin-bottom: 6px; }
+  .field input {
+    width: 100%; font-family: Arial, Helvetica, sans-serif; font-size: 0.95rem;
+    padding: 11px 13px; border: 1px solid #cfe0d7; border-radius: 9px;
+    background: #fafefb; color: #10241d;
+  }
+  .field input:focus {
+    outline: none; border-color: #0f8a6b; box-shadow: 0 0 0 3px rgba(15,138,107,0.15);
+  }
+  .row-between {
+    display: flex; align-items: center; justify-content: space-between;
+    margin: 4px 0 20px; font-size: 0.82rem;
+  }
+  .row-between label { display: flex; align-items: center; gap: 6px; color: #4a564f; cursor: pointer; }
+  .row-between a { color: #0f8a6b; text-decoration: none; font-weight: 700; }
+  .signin-btn {
+    width: 100%; background: #0f8a6b; color: #fff; border: none; border-radius: 10px;
+    padding: 13px; font-family: Arial, Helvetica, sans-serif; font-size: 0.98rem;
+    font-weight: 700; cursor: pointer;
+  }
+  .signin-btn:hover { background: #0c7358; }
+  .divider {
+    display: flex; align-items: center; gap: 12px; margin: 24px 0 18px;
+    color: #9aa8a2; font-size: 0.78rem;
+  }
+  .divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #e4ece8; }
+  .family-label { font-size: 0.85rem; color: #4a564f; margin-bottom: 12px; text-align: center; }
+  .family-strip { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 6px; }
+  .family-chip {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    background: none; border: none; cursor: pointer; padding: 6px 4px;
+    font-family: Arial, Helvetica, sans-serif; width: 74px;
+  }
+  .family-avatar {
+    width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; color: #fff; font-weight: 700; font-size: 1rem;
+    border: 2px solid transparent; transition: border-color 0.15s, transform 0.15s;
+  }
+  .family-chip:hover .family-avatar { transform: translateY(-2px); }
+  .family-chip.selected .family-avatar { border-color: #0f8a6b; }
+  .family-chip span.name { font-size: 0.78rem; color: #4a564f; text-align: center; }
+  .family-avatar.tone-1 { background: #0f8a6b; }
+  .family-avatar.tone-2 { background: #2fbf71; }
+  .family-avatar.tone-3 { background: #1a9e6e; }
+  .family-avatar.tone-4 { background: #1976d2; }
+  .add-member-btn {
+    display: block; width: 100%; text-align: center; margin-top: 18px;
+    background: none; border: 1px dashed #b7d9c8; border-radius: 9px; padding: 10px;
+    font-family: Arial, Helvetica, sans-serif; font-size: 0.85rem; color: #0f8a6b;
+    font-weight: 700; cursor: pointer;
+  }
+  .add-member-btn:hover { background: #f4fbf7; }
+  .signup-note { text-align: center; font-size: 0.85rem; color: #5c6b64; margin-top: 22px; }
+  .signup-note a { color: #0f8a6b; font-weight: 700; text-decoration: none; }
+  .back-home {
+    display: block; text-align: center; margin-top: 16px; color: #0f8a6b;
+    font-weight: 700; text-decoration: none; font-size: 0.9rem;
+  }
+</style>
+</head>
+<body>
+  <div class="login-shell">
+    <div class="brand-row">
+      <div class="brand-mark">D</div>
+      <div class="brand-name">DoseWise</div>
+    </div>
+
+    <div class="login-card">
+      <h1>Welcome back</h1>
+      <p class="lead">Sign in to see your prescriptions and today's dosage.</p>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@example.com" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter your password" required>
+        </div>
+        <div class="row-between">
+          <label><input type="checkbox" id="rememberMe"> Keep me signed in</label>
+          <a href="#">Forgot password?</a>
+        </div>
+        <button type="submit" class="signin-btn">Sign in</button>
+      </form>
+
+      <div class="divider">or continue as a family member</div>
+      <p class="family-label">Tap a profile to open their prescriptions and doses</p>
+
+      <div class="family-strip" id="familyStrip">
+        <button class="family-chip" data-name="Deeksha">
+          <span class="family-avatar tone-1">D</span>
+          <span class="name">Deeksha</span>
+        </button>
+        <button class="family-chip" data-name="Papa">
+          <span class="family-avatar tone-2">P</span>
+          <span class="name">Papa</span>
+        </button>
+        <button class="family-chip" data-name="Mumma">
+          <span class="family-avatar tone-3">M</span>
+          <span class="name">Mumma</span>
+        </button>
+        <button class="family-chip" data-name="Nani">
+          <span class="family-avatar tone-4">N</span>
+          <span class="name">Nani</span>
+        </button>
+      </div>
+
+      <button class="add-member-btn" id="addMemberBtn">+ Add a family member</button>
+    </div>
+
+    <p class="signup-note">New to DoseWise? <a href="#">Create a family account</a></p>
+    <a href="/" class="back-home">← Back to Home</a>
+  </div>
+
+<script>
+  document.getElementById('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    // Demo login — redirect to home
+    window.location.href = '/';
+  });
+
+  document.querySelectorAll('.family-chip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      document.querySelectorAll('.family-chip').forEach(c => c.classList.remove('selected'));
+      chip.classList.add('selected');
+      // Demo — go to home as that family member
+      setTimeout(() => { window.location.href = '/'; }, 300);
+    });
+  });
+
+  document.getElementById('addMemberBtn').addEventListener('click', function () {
+    alert('Family member feature coming soon!');
+  });
+</script>
+</body>
+</html>

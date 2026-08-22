@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Medicines | DoseWise</title>
+<style>
+  :root {
+    --ink: #0d1b2a; --body-text: #4a564f; --muted-text: #8a9891;
+    --leaf-dark: #0c7358; --leaf: #0f8a6b; --leaf-light: #2fbf71;
+    --mint-bg: #ecfaf2; --mint-border: #d9ece2;
+    --amber: #b8791f; --amber-bg: #fdf6e6; --amber-border: #f0dfae;
+    --red: #c0392b; --red-bg: #fbeae8; --red-border: #f2c9c2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, Helvetica, sans-serif; background: #fff; color: var(--ink); padding-bottom: 90px; }
+  .navbar {
+    background: #fff; border-bottom: 1px solid var(--mint-border); position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 10px rgba(12,115,88,0.04);
+  }
+  .nav-container {
+    max-width: 960px; margin: 0 auto; padding: 14px 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ink);
+    font-weight: 900; font-size: 1.25rem;
+  }
+  .brand-badge {
+    background: linear-gradient(135deg, var(--leaf), var(--leaf-dark));
+    color: #fff; width: 32px; height: 32px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-brand span span { color: var(--leaf); }
+  .nav-links { display: flex; align-items: center; gap: 8px; list-style: none; }
+  .nav-link {
+    text-decoration: none; color: var(--body-text); font-size: 0.88rem; font-weight: 700;
+    padding: 8px 14px; border-radius: 8px;
+  }
+  .nav-link:hover { background: var(--mint-bg); color: var(--leaf-dark); }
+  .nav-link.active { background: var(--leaf); color: #fff; }
+  @media (max-width: 700px) {
+    .nav-container { flex-direction: column; }
+    .nav-links { overflow-x: auto; }
+    .nav-link { white-space: nowrap; font-size: 0.82rem; }
+  }
+  .page { max-width: 780px; margin: 40px auto 0; padding: 0 20px; }
+  header { text-align: center; margin-bottom: 10px; }
+  h1 { font-size: 2rem; font-weight: 900; }
+  .subtitle { max-width: 520px; margin: 14px auto 40px; color: var(--body-text); font-size: 1rem; text-align: center; line-height: 1.6; }
+  .box {
+    background: var(--mint-bg); border: 1px solid var(--mint-border); border-radius: 18px;
+    padding: 28px; margin-bottom: 30px;
+  }
+  .box h2 { font-size: 1.15rem; margin-bottom: 4px; }
+  .box .box-hint { font-size: 0.88rem; color: var(--body-text); margin-bottom: 20px; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 0.82rem; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .field input, .field textarea {
+    width: 100%; font-family: Arial, Helvetica, sans-serif; font-size: 0.95rem;
+    padding: 11px 13px; border: 1px solid var(--mint-border); border-radius: 9px;
+    background: #fff; color: var(--ink);
+  }
+  .field input:focus, .field textarea:focus {
+    outline: none; border-color: var(--leaf); box-shadow: 0 0 0 3px rgba(15,138,107,0.15);
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .submit-btn {
+    background: var(--leaf); color: #fff; border: none; border-radius: 10px;
+    padding: 13px 28px; font-size: 0.98rem; font-weight: 700; cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .submit-btn:hover { background: var(--leaf-dark); }
+  .med-list { display: flex; flex-direction: column; gap: 12px; }
+  .med-card {
+    background: #fff; border: 1px solid var(--mint-border); border-radius: 12px;
+    padding: 16px 18px; display: flex; align-items: center; gap: 14px;
+  }
+  .med-info { flex: 1; }
+  .med-name { font-weight: 800; font-size: 1rem; }
+  .med-meta { font-size: 0.85rem; color: var(--muted-text); margin-top: 3px; }
+  .status-badge {
+    font-size: 0.78rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; white-space: nowrap;
+  }
+  .status-ok { background: var(--mint-bg); color: var(--leaf-dark); }
+  .status-warn { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+  .status-expired { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+  .btn-delete {
+    background: var(--red-bg); color: var(--red); border: none; border-radius: 8px;
+    padding: 8px 14px; font-size: 0.82rem; font-weight: 700; cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .empty-msg { text-align: center; color: var(--muted-text); padding: 24px; }
+  @media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; }
+    .med-card { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/" class="nav-brand">
+      <div class="brand-badge">💊</div>
+      <span>DOSE<span>WISE</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/" class="nav-link">🏠 Home</a></li>
+      <li><a href="/medicines" class="nav-link active">📅 Track Expiry</a></li>
+      <li><a href="/reminders" class="nav-link">⏰ Dose Reminder</a></li>
+      <li><a href="/scanner" class="nav-link">📄 Scan Prescription</a></li>
+      <li><a href="/login" class="nav-link">👤 Login</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page">
+  <header>
+    <h1>My Medicines</h1>
+    <p class="subtitle">Keep track of your medicines and their expiry dates so you never use expired stock.</p>
+  </header>
+
+  <div class="box">
+    <h2>Add Medicine</h2>
+    <p class="box-hint">Enter the medicine details including expiry date.</p>
+    <form id="medForm">
+      <div class="form-row">
+        <div class="field">
+          <label for="medName">Medicine Name *</label>
+          <input type="text" id="medName" placeholder="e.g. Amoxicillin 250mg" required>
+        </div>
+        <div class="field">
+          <label for="quantity">Quantity</label>
+          <input type="text" id="quantity" placeholder="e.g. 10 tablets">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="expiryDate">Expiry Date *</label>
+          <input type="date" id="expiryDate" required>
+        </div>
+        <div class="field">
+          <label for="medNotes">Notes</label>
+          <input type="text" id="medNotes" placeholder="Optional notes">
+        </div>
+      </div>
+      <button type="submit" class="submit-btn">+ Add Medicine</button>
+    </form>
+  </div>
+
+  <div class="box">
+    <h2>Medicine Inventory</h2>
+    <p class="box-hint">Your medicines sorted by expiry date.</p>
+    <div class="med-list" id="medList">
+      <p class="empty-msg">Loading...</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API = '';
+
+  async function loadMedicines() {
+    const list = document.getElementById('medList');
+    try {
+      const res = await fetch(API + '/api/medicines');
+      const medicines = await res.json();
+      if (!medicines.length) {
+        list.innerHTML = '<p class="empty-msg">No medicines yet. Add one above!</p>';
+        return;
+      }
+      medicines.sort((a, b) => (a.expiryDate || '').localeCompare(b.expiryDate || ''));
+      list.innerHTML = medicines.map(m => {
+        const days = daysUntil(m.expiryDate);
+        const status = getStatus(days);
+        return `
+          <div class="med-card">
+            <div class="med-info">
+              <div class="med-name">${esc(m.name)}</div>
+              <div class="med-meta">
+                ${m.quantity ? esc(m.quantity) + ' · ' : ''}
+                Expires: ${formatDate(m.expiryDate)}
+                ${m.notes ? ' · ' + esc(m.notes) : ''}
+              </div>
+            </div>
+            <span class="status-badge ${status.cls}">${status.text}</span>
+            <button class="btn-delete" onclick="deleteMed('${m.id}')">Delete</button>
+          </div>
+        `;
+      }).join('');
+    } catch (e) {
+      list.innerHTML = '<p class="empty-msg">Failed to load. Is the server running?</p>';
+    }
+  }
+
+  document.getElementById('medForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const body = {
+      name: document.getElementById('medName').value.trim(),
+      quantity: document.getElementById('quantity').value.trim(),
+      expiryDate: document.getElementById('expiryDate').value,
+      notes: document.getElementById('medNotes').value.trim(),
+    };
+    try {
+      const res = await fetch(API + '/api/medicines', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        alert(err.error || 'Failed');
+        return;
+      }
+      e.target.reset();
+      loadMedicines();
+    } catch (err) {
+      alert('Network error. Is the server running?');
+    }
+  });
+
+  async function deleteMed(id) {
+    if (!confirm('Delete this medicine?')) return;
+    try {
+      await fetch(API + '/api/medicines/' + id, { method: 'DELETE' });
+      loadMedicines();
+    } catch (e) { alert('Failed to delete'); }
+  }
+
+  function daysUntil(dateStr) {
+    if (!dateStr) return 9999;
+    const exp = new Date(dateStr + 'T00:00:00');
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return Math.ceil((exp - today) / (1000 * 60 * 60 * 24));
+  }
+
+  function getStatus(days) {
+    if (days < 0) return { cls: 'status-expired', text: 'Expired' };
+    if (days <= 30) return { cls: 'status-warn', text: days + ' days left' };
+    return { cls: 'status-ok', text: 'OK' };
+  }
+
+  function formatDate(d) {
+    if (!d) return 'N/A';
+    return new Date(d + 'T00:00:00').toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+  function esc(s) {
+    const d = document.createElement('div');
+    d.textContent = s || '';
+    return d.innerHTML;
+  }
+
+  loadMedicines();
+</script>
+</body>
+</html>
