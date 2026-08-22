@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DoseWise | Smart Family Medication Management</title>
+<style>
+  :root {
+    --ink: #0d1b2a;
+    --body-text: #4a564f;
+    --muted-text: #8a9891;
+    --leaf-dark: #0c7358;
+    --leaf: #0f8a6b;
+    --leaf-light: #2fbf71;
+    --mint-bg: #eaf8f0;
+    --mint-border: #d9ece2;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #ffffff;
+    color: var(--ink);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Navbar */
+  .navbar {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--mint-border);
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 10px rgba(12, 115, 88, 0.04);
+  }
+  .nav-container {
+    max-width: 1080px; margin: 0 auto; padding: 16px 20px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .nav-brand {
+    display: flex; align-items: center; gap: 8px;
+    text-decoration: none; color: var(--ink);
+    font-weight: 900; font-size: 1.3rem; letter-spacing: -0.5px;
+  }
+  .brand-badge {
+    background: linear-gradient(135deg, var(--leaf), var(--leaf-dark));
+    color: var(--white); font-size: 0.95rem; width: 34px; height: 34px;
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  }
+  .nav-brand span span { color: var(--leaf); }
+
+  .nav-menu { display: flex; align-items: center; gap: 20px; list-style: none; }
+  .nav-menu a {
+    text-decoration: none; color: var(--body-text); font-size: 0.9rem;
+    font-weight: 700; transition: color 0.18s ease;
+  }
+  .nav-menu a:hover { color: var(--leaf-dark); }
+
+  .btn-nav-login {
+    background-color: var(--leaf); color: var(--white) !important;
+    padding: 9px 20px; border-radius: 10px; font-weight: 700;
+    transition: background 0.18s ease, transform 0.18s ease !important;
+  }
+  .btn-nav-login:hover { background-color: var(--leaf-dark); transform: translateY(-1px); }
+
+  /* Hero Section */
+  .hero-container {
+    max-width: 1080px; margin: 0 auto; padding: 70px 20px 60px;
+    text-align: center; position: relative;
+  }
+  .badge-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background-color: var(--mint-bg); color: var(--leaf-dark);
+    border: 1px solid var(--mint-border); border-radius: 20px;
+    padding: 6px 16px; font-size: 0.85rem; font-weight: 700; margin-bottom: 24px;
+  }
+  h1 {
+    font-size: clamp(2.3rem, 5vw, 3.4rem); font-weight: 900;
+    line-height: 1.12; letter-spacing: -0.8px; color: var(--ink); margin-bottom: 20px;
+  }
+  h1 .gradient-text {
+    background: linear-gradient(135deg, var(--leaf), var(--leaf-light));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    max-width: 660px; margin: 0 auto 36px; color: var(--body-text);
+    font-size: 1.1rem; line-height: 1.65;
+  }
+  .hero-cta { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--leaf), var(--leaf-dark));
+    color: var(--white); text-decoration: none; font-size: 1.05rem; font-weight: 700;
+    padding: 14px 32px; border-radius: 12px; transition: transform 0.18s ease, box-shadow 0.18s ease;
+    box-shadow: 0 8px 20px rgba(15, 138, 107, 0.25);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(15, 138, 107, 0.35); }
+  .btn-secondary {
+    background-color: var(--mint-bg); color: var(--leaf-dark); text-decoration: none;
+    font-size: 1.05rem; font-weight: 700; padding: 14px 28px; border-radius: 12px;
+    border: 1px solid var(--mint-border); transition: background 0.18s ease;
+  }
+  .btn-secondary:hover { background-color: #d8f3e5; }
+
+  /* Features Section */
+  .features-section {
+    background-color: #f9fbf9; border-top: 1px solid var(--mint-border);
+    border-bottom: 1px solid var(--mint-border); padding: 80px 20px;
+  }
+  .section-header { text-align: center; max-width: 640px; margin: 0 auto 50px; }
+  .section-title { font-size: 2rem; font-weight: 900; color: var(--ink); margin-bottom: 12px; }
+  .section-desc { color: var(--body-text); font-size: 1rem; }
+
+  .features-grid {
+    max-width: 1080px; margin: 0 auto; display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px;
+  }
+  .feature-card {
+    background-color: var(--white); border: 1px solid var(--mint-border);
+    border-radius: 18px; padding: 30px 24px; transition: transform 0.18s ease, box-shadow 0.18s ease;
+    box-shadow: 0 4px 15px rgba(12, 115, 88, 0.03);
+  }
+  .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(12, 115, 88, 0.08); }
+  .feature-icon {
+    width: 52px; height: 52px; border-radius: 14px; background-color: var(--mint-bg);
+    color: var(--leaf); font-size: 1.4rem; display: flex; align-items: center;
+    justify-content: center; margin-bottom: 20px; border: 1px solid var(--mint-border);
+  }
+  .feature-title { font-size: 1.15rem; font-weight: 800; color: var(--ink); margin-bottom: 8px; }
+  .feature-text { font-size: 0.92rem; color: var(--body-text); line-height: 1.55; }
+
+  /* Steps Section */
+  .steps-section { padding: 80px 20px; max-width: 1080px; margin: 0 auto; }
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px; margin-top: 50px;
+  }
+  .step-card {
+    position: relative; padding: 28px; border-radius: 16px;
+    border: 1px solid #e7efeb; background-color: var(--white);
+  }
+  .step-number {
+    font-size: 2rem; font-weight: 900; color: var(--leaf-light); margin-bottom: 12px; opacity: 0.8;
+  }
+
+  /* CTA Banner */
+  .cta-section {
+    max-width: 1080px; margin: 20px auto 80px; padding: 0 20px;
+  }
+  .cta-box {
+    background: linear-gradient(135deg, var(--leaf-dark), var(--leaf));
+    border-radius: 24px; padding: 50px 30px; text-align: center; color: var(--white);
+    box-shadow: 0 16px 36px rgba(12, 115, 88, 0.2);
+  }
+  .cta-box h2 { font-size: 2.1rem; font-weight: 900; margin-bottom: 12px; }
+  .cta-box p { font-size: 1.05rem; opacity: 0.9; margin-bottom: 28px; max-width: 580px; margin-left: auto; margin-right: auto; }
+  .btn-cta {
+    background-color: var(--white); color: var(--leaf-dark); text-decoration: none;
+    font-size: 1.05rem; font-weight: 800; padding: 14px 34px; border-radius: 12px;
+    display: inline-block; transition: transform 0.18s ease, background 0.18s ease;
+  }
+  .btn-cta:hover { background-color: var(--mint-bg); transform: translateY(-2px); }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--mint-border); padding: 30px 20px;
+    text-align: center; font-size: 0.88rem; color: var(--muted-text); background-color: #ffffff;
+  }
+
+  @media (max-width: 700px) {
+    .nav-container { flex-direction: column; gap: 12px; }
+    .hero-container { padding: 40px 20px 40px; }
+    .cta-box { padding: 36px 20px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-brand">
+        <div class="brand-badge">💊</div>
+        <span>DOSE<span>WISE</span></span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="/login" class="btn-nav-login" id="navAuthBtn">Sign In</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-container">
+    <div class="badge-pill">✨ Smart Medication Management</div>
+    <h1>Never Miss a Dose<br><span class="gradient-text">Again</span></h1>
+    <p class="hero-sub">
+      DoseWise is your intelligent health companion. Track daily medications, receive timely dose reminders, monitor stock expiration dates, and scan prescriptions effortlessly.
+    </p>
+    <div class="hero-cta">
+      <a href="/login" class="btn-primary" id="heroCtaBtn">Get Started Now →</a>
+      <a href="#features" class="btn-secondary">Explore Features</a>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section" id="features">
+    <div class="section-header">
+      <h2 class="section-title">Everything You Need for Peace of Mind</h2>
+      <p class="section-desc">Designed to keep your family's health on schedule without the hassle.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⏰</div>
+        <h3 class="feature-title">Daily Dose Reminders</h3>
+        <p class="feature-text">Set up custom times and frequency for every medicine. Mark items as taken with one tap.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <h3 class="feature-title">Expiry Date Tracker</h3>
+        <p class="feature-text">Track your medicine inventory and get warnings before medicines expire or run low.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <h3 class="feature-title">Prescription Scanner</h3>
+        <p class="feature-text">Upload and archive photo scans of doctor's prescriptions and label bottles safely.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <h3 class="feature-title">Family Care Profiles</h3>
+        <p class="feature-text">Manage prescriptions and dose schedules for your parents, children, and loved ones easily.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="steps-section" id="how-it-works">
+    <div class="section-header">
+      <h2 class="section-title">How DoseWise Works</h2>
+      <p class="section-desc">3 simple steps to organize your daily medications</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">01</div>
+        <h3 class="feature-title">Sign In & Select Profile</h3>
+        <p class="feature-text">Log in with your account or choose a family profile to manage personal medicine schedules.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">02</div>
+        <h3 class="feature-title">Add Your Medicines</h3>
+        <p class="feature-text">Enter dosage times, upload prescriptions, and log expiry dates into your central dashboard.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-number">03</div>
+        <h3 class="feature-title">Track & Stay Healthy</h3>
+        <p class="feature-text">Receive schedule updates, tick off daily doses, and stay informed on refills effortlessly.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner -->
+  <section class="cta-section">
+    <div class="cta-box">
+      <h2>Ready to Start Managing Your Health?</h2>
+      <p>Sign in now to access your daily schedule, medicine inventory, and prescription scanner.</p>
+      <a href="/login" class="btn-cta" id="bannerCtaBtn">Sign In to DoseWise →</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 DoseWise Health Technologies. All rights reserved.</p>
+  </footer>
+
+  <script src="/auth.js"></script>
+  <script>
+    // Update CTAs if user is already logged in
+    const user = Auth.getUser();
+    if (user) {
+      const navBtn = document.getElementById('navAuthBtn');
+      const heroBtn = document.getElementById('heroCtaBtn');
+      const bannerBtn = document.getElementById('bannerCtaBtn');
+
+      if (navBtn) { navBtn.textContent = 'Go to Dashboard →'; navBtn.href = '/home'; }
+      if (heroBtn) { heroBtn.textContent = 'Go to Dashboard →'; heroBtn.href = '/home'; }
+      if (bannerBtn) { bannerBtn.textContent = 'Open Dashboard →'; bannerBtn.href = '/home'; }
+    }
+  </script>
+</body>
+</html>

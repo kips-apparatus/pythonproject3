@@ -45,6 +45,16 @@ def write_data(key, data):
 # =========================================================
 
 @app.route("/")
+def index():
+    return send_from_directory("html", "landing.html")
+
+
+@app.route("/landing")
+def landing_page():
+    return send_from_directory("html", "landing.html")
+
+
+@app.route("/home")
 def home():
     return send_from_directory("html", "homepage123.html")
 
@@ -67,6 +77,7 @@ def scanner_page():
 @app.route("/login")
 def login_page():
     return send_from_directory("html", "loginpage.html")
+
 
 
 # =========================================================
@@ -233,6 +244,6 @@ def delete_prescription(id):
 if __name__ == "__main__":
     print("\n" + "=" * 50)
     print("  DoseWise is running!")
-    print("  Open → http://127.0.0.1:5000")
+    print("  Open -> http://127.0.0.1:5000")
     print("=" * 50 + "\n")
     app.run(debug=True, host="0.0.0.0", port=5000)
