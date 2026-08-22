@@ -244,6 +244,6 @@ def delete_prescription(id):
 if __name__ == "__main__":
     print("\n" + "=" * 50)
     print("  DoseWise is running!")
-    print("  Open → http://127.0.0.1:5000")
+    print("  Open -> http://127.0.0.1:5000")
     print("=" * 50 + "\n")
     app.run(debug=True, host="0.0.0.0", port=5000)
