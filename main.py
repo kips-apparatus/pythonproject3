@@ -20,6 +20,7 @@ FILES = {
     "reminders": os.path.join(DATA_DIR, "reminders.json"),
     "medicines": os.path.join(DATA_DIR, "medicines.json"),
     "prescriptions": os.path.join(DATA_DIR, "prescriptions.json"),
+    "users": os.path.join(DATA_DIR, "users.json"),
 }
 
 
@@ -78,6 +79,79 @@ def scanner_page():
 def login_page():
     return send_from_directory("html", "loginpage.html")
 
+
+
+# =========================================================
+# API: Authentication (Sign Up & Login)
+# =========================================================
+
+@app.route("/api/signup", methods=["POST"])
+def signup():
+    data = request.get_json(silent=True) or {}
+    name = data.get("name", "").strip()
+    email = data.get("email", "").strip().lower()
+    password = data.get("password", "").strip()
+
+    if not name or not email or not password:
+        return jsonify({"error": "All fields are required"}), 400
+
+    if not email.endswith("@gmail.com"):
+        return jsonify({"error": "Invalid email input"}), 400
+
+    users = read_data("users")
+    for u in users:
+        if u.get("email") == email:
+            return jsonify({"error": "An account with this email already exists. Please sign in."}), 400
+
+    new_user = {
+        "id": str(uuid.uuid4()),
+        "name": name,
+        "email": email,
+        "password": password,
+        "createdAt": datetime.now().isoformat(),
+    }
+    users.append(new_user)
+    write_data("users", users)
+
+    return jsonify({
+        "message": "Sign up successful",
+        "user": {
+            "id": new_user["id"],
+            "name": new_user["name"],
+            "email": new_user["email"]
+        }
+    }), 201
+
+
+@app.route("/api/login", methods=["POST"])
+def login():
+    data = request.get_json(silent=True) or {}
+    email = data.get("email", "").strip().lower()
+    password = data.get("password", "").strip()
+
+    if not email or not password:
+        return jsonify({"error": "Email and password are required"}), 400
+
+    if not email.endswith("@gmail.com"):
+        return jsonify({"error": "Invalid email input"}), 400
+
+    users = read_data("users")
+    user = next((u for u in users if u.get("email") == email), None)
+
+    if not user:
+        return jsonify({"error": "Account not found. Please sign up first."}), 400
+
+    if user.get("password") != password:
+        return jsonify({"error": "Invalid email or password."}), 400
+
+    return jsonify({
+        "message": "Login successful",
+        "user": {
+            "id": user["id"],
+            "name": user["name"],
+            "email": user["email"]
+        }
+    }), 200
 
 
 # =========================================================
