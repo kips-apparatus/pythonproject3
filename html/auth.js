@@ -43,12 +43,13 @@ const Auth = {
 
       const userLi = document.createElement('li');
       userLi.className = 'user-nav-item';
+      userLi.style.cssText = 'white-space:nowrap; flex-shrink:0; margin-left:8px;';
       userLi.innerHTML = `
-        <div style="display:flex; align-items:center; gap:8px; margin-left:6px;">
-          <span style="font-size:0.85rem; font-weight:700; color:#0c7358; background:#eaf8f0; padding:6px 12px; border-radius:20px; border:1px solid #d9ece2; display:flex; align-items:center; gap:5px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:0.85rem; font-weight:700; color:#0c7358; background:#eaf8f0; padding:7px 14px; border-radius:20px; border:1px solid #d9ece2; display:inline-flex; align-items:center; gap:6px; white-space:nowrap;">
             👤 ${this.escapeHtml(user.name)}
           </span>
-          <button onclick="Auth.logout()" style="background:#fbeae8; color:#c0392b; border:1px solid #f2c9c2; border-radius:8px; padding:6px 12px; font-size:0.82rem; font-weight:700; cursor:pointer; font-family:inherit; transition:all 0.18s ease;">
+          <button onclick="Auth.logout()" style="background:#fbeae8; color:#c0392b; border:1px solid #f2c9c2; border-radius:10px; padding:7px 14px; font-size:0.82rem; font-weight:700; cursor:pointer; font-family:inherit; transition:all 0.18s ease; display:inline-flex; align-items:center; gap:5px; white-space:nowrap;">
             🚪 Logout
           </button>
         </div>
